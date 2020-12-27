@@ -5,7 +5,7 @@ jobs:
     docker:
       # We use node-browsers because we will implement E2E test in this project
       - image: circleci/node:14-browsers
-    
+
     working_directory: ~/repo
 
 steps:
@@ -15,9 +15,9 @@ steps:
   # Restore cache if exist
   - restore_cache:
     keys:
-      - v1-dependencies-{{ checksum: 'package.json' }}
+      - v1-dependencies-{{ checksum "package.json" }}
       - v1-dependencies-
-  
+
   # Install the packages
   - run: yarn install
 
@@ -27,8 +27,8 @@ steps:
       - node_modules
       - ~/.npm
       - ~/.cache
-    
-    key: v1-dependencies-{{ checksum: 'package.json' }}
-  
+
+    key: v1-dependencies-{{ checksum 'package.json' }}
+
   # Test the project
   - run: yarn test
