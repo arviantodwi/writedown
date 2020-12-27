@@ -15,8 +15,8 @@ jobs:
       # Restore cache if exist
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
+            - writedown-{{ checksum "package.json" }}
+            - writedown-
 
       - run:
           name: Install the packages
@@ -28,7 +28,11 @@ jobs:
             - node_modules
             - ~/.npm
             - ~/.cache
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: writedown-{{ checksum "package.json" }}
+
+      - run:
+          name: Lint the project source files
+          command: yarn lint
 
       - run:
           name: Test the project
