@@ -8,27 +8,27 @@ jobs:
 
     working_directory: ~/repo
 
-steps:
-  # Checkout code from repository
-  - checkout
+  steps:
+    # Checkout code from repository
+    - checkout
 
-  # Restore cache if exist
-  - restore_cache:
-    keys:
-      - v1-dependencies-{{ checksum "package.json" }}
-      - v1-dependencies-
+    # Restore cache if exist
+    - restore_cache:
+      keys:
+        - v1-dependencies-{{ checksum "package.json" }}
+        - v1-dependencies-
 
-  # Install the packages
-  - run: yarn install
+    # Install the packages
+    - run: yarn install
 
-  # Save cache with corresponding key
-  - save_cache:
-    paths:
-      - node_modules
-      - ~/.npm
-      - ~/.cache
+    # Save cache with corresponding key
+    - save_cache:
+      paths:
+        - node_modules
+        - ~/.npm
+        - ~/.cache
 
-    key: v1-dependencies-{{ checksum 'package.json' }}
+      key: v1-dependencies-{{ checksum 'package.json' }}
 
-  # Test the project
-  - run: yarn test
+    # Test the project
+    - run: yarn test
