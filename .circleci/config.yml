@@ -98,8 +98,16 @@ jobs:
 workflows:
   main:
     jobs:
-      - test
-      - build
+      - test:
+          filters:
+            branches:
+              ignore: gh-pages
+      - build:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
       - gh-pages-deploy:
           requires:
             - test
