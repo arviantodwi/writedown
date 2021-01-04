@@ -72,8 +72,38 @@ jobs:
           paths:
             - ./*
 
+  gh-pages-deploy:
+    docker:
+      - image: circleci/node:14
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - attach_workspace:
+          at: ./build
+
+      - run:
+          name: Install and configure gh-pages dependency
+          command: |
+            npm install --global --save-dev --silent gh-pages
+            git config user.email "arvianto.dwi@gmail.com"
+            git config user.name "Arvianto Dwi"
+
+      - run:
+          name: Deploy project to gh-pages
+          command: gh-pages --dist ./build
+
 workflows:
   main:
     jobs:
       - test
       - build
+      - gh-pages-deploy:
+          requires:
+            - test
+            - build
+          filters:
+            branches:
+              only: master
