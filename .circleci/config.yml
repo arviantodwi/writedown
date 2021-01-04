@@ -38,7 +38,42 @@ jobs:
           name: Test the project
           command: yarn test
 
+  build:
+    docker:
+      - image: circleci/node:14
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - writedown-{{ checksum "package.json" }}
+            - writedown-
+
+      - run:
+          name: Install the packages
+          command: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+            - ~/.npm
+            - ~/.cache
+          key: writedown-{{ checksum "package.json" }}
+
+      - run:
+          name: Build the project
+          command: yarn build
+
+      - persist_to_workspace:
+          root: ./build
+          paths:
+            - ./*
+
 workflows:
   main:
     jobs:
       - test
+      - build
